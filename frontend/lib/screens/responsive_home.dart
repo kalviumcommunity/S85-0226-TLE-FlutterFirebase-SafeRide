@@ -23,9 +23,17 @@ class ResponsiveHome extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.blue[600],
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [const Color(0xFF667eea), const Color(0xFF764ba2)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         foregroundColor: Colors.white,
-        elevation: 4,
+        elevation: 8,
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -59,28 +67,35 @@ class ResponsiveHome extends StatelessWidget {
   // Header Section with responsive design
   Widget _buildHeaderSection(BuildContext context, bool isTablet, bool isLandscape) {
     return Container(
-      padding: EdgeInsets.all(isTablet ? 24.0 : 16.0),
+      padding: EdgeInsets.all(isTablet ? 32.0 : 20.0),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.blue[400]!, Colors.blue[600]!],
+          colors: [const Color(0xFF667eea), const Color(0xFF764ba2)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            color: const Color(0xFF667eea).withOpacity(0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Column(
         children: [
-          Icon(
-            Icons.directions_car,
-            size: isTablet ? 80 : 60,
-            color: Colors.white,
+          Container(
+            padding: EdgeInsets.all(isTablet ? 20 : 16),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.directions_car_rounded,
+              size: isTablet ? 80 : 60,
+              color: Colors.white,
+            ),
           ),
           const SizedBox(height: 16),
           Text(
@@ -97,7 +112,7 @@ class ResponsiveHome extends StatelessWidget {
             'Your trusted companion for safe journeys',
             style: TextStyle(
               fontSize: isTablet ? 18 : 14,
-              color: Colors.white70,
+              color: Colors.white.withOpacity(0.9),
             ),
             textAlign: TextAlign.center,
           ),
@@ -112,9 +127,9 @@ class ResponsiveHome extends StatelessWidget {
       // Landscape phone: Use Row layout
       return Row(
         children: [
-          Expanded(child: _buildStatsCard('Active Rides', '247', Icons.directions_car, Colors.green, isTablet)),
+          Expanded(child: _buildStatsCard('Active Rides', '247', Icons.directions_car_rounded, const Color(0xFF10b981), isTablet)),
           const SizedBox(width: 16),
-          Expanded(child: _buildStatsCard('Safe Journeys', '1,842', Icons.security, Colors.blue, isTablet)),
+          Expanded(child: _buildStatsCard('Safe Journeys', '1,842', Icons.security_rounded, const Color(0xFF667eea), isTablet)),
         ],
       );
     } else if (isTablet) {
@@ -127,23 +142,23 @@ class ResponsiveHome extends StatelessWidget {
         mainAxisSpacing: 16,
         crossAxisSpacing: 16,
         children: [
-          _buildStatsCard('Active Rides', '247', Icons.directions_car, Colors.green, isTablet),
-          _buildStatsCard('Safe Journeys', '1,842', Icons.security, Colors.blue, isTablet),
-          _buildStatsCard('Drivers Online', '89', Icons.people, Colors.orange, isTablet),
-          _buildStatsCard('Rating', '4.8', Icons.star, Colors.amber, isTablet),
+          _buildStatsCard('Active Rides', '247', Icons.directions_car_rounded, const Color(0xFF10b981), isTablet),
+          _buildStatsCard('Safe Journeys', '1,842', Icons.security_rounded, const Color(0xFF667eea), isTablet),
+          _buildStatsCard('Drivers Online', '89', Icons.people_rounded, const Color(0xFFf59e0b), isTablet),
+          _buildStatsCard('Rating', '4.8', Icons.star_rounded, const Color(0xFFfbbf24), isTablet),
         ],
       );
     } else {
       // Portrait phone: Use Column
       return Column(
         children: [
-          _buildStatsCard('Active Rides', '247', Icons.directions_car, Colors.green, isTablet),
+          _buildStatsCard('Active Rides', '247', Icons.directions_car_rounded, const Color(0xFF10b981), isTablet),
           const SizedBox(height: 16),
-          _buildStatsCard('Safe Journeys', '1,842', Icons.security, Colors.blue, isTablet),
+          _buildStatsCard('Safe Journeys', '1,842', Icons.security_rounded, const Color(0xFF667eea), isTablet),
           const SizedBox(height: 16),
-          _buildStatsCard('Drivers Online', '89', Icons.people, Colors.orange, isTablet),
+          _buildStatsCard('Drivers Online', '89', Icons.people_rounded, const Color(0xFFf59e0b), isTablet),
           const SizedBox(height: 16),
-          _buildStatsCard('Rating', '4.8', Icons.star, Colors.amber, isTablet),
+          _buildStatsCard('Rating', '4.8', Icons.star_rounded, const Color(0xFFfbbf24), isTablet),
         ],
       );
     }
@@ -152,11 +167,22 @@ class ResponsiveHome extends StatelessWidget {
   // Individual Stats Card with responsive sizing
   Widget _buildStatsCard(String title, String value, IconData icon, Color color, bool isTablet) {
     return Container(
-      padding: EdgeInsets.all(isTablet ? 20.0 : 16.0),
+      padding: EdgeInsets.all(isTablet ? 24.0 : 20.0),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
+        gradient: LinearGradient(
+          colors: [color.withOpacity(0.1), color.withOpacity(0.2)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: color.withOpacity(0.3), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.15),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -192,10 +218,10 @@ class ResponsiveHome extends StatelessWidget {
   // Feature Cards Section with responsive grid
   Widget _buildFeatureCards(BuildContext context, bool isTablet, bool isLandscape) {
     final features = [
-      {'title': 'Real-time Tracking', 'icon': Icons.gps_fixed, 'color': Colors.purple},
-      {'title': 'Emergency SOS', 'icon': Icons.emergency, 'color': Colors.red},
-      {'title': 'Driver Verification', 'icon': Icons.verified_user, 'color': Colors.teal},
-      {'title': 'Share Trip', 'icon': Icons.share, 'color': Colors.indigo},
+      {'title': 'Real-time Tracking', 'icon': Icons.gps_fixed, 'color': const Color(0xFF8b5cf6)},
+      {'title': 'Emergency SOS', 'icon': Icons.emergency, 'color': const Color(0xFFef4444)},
+      {'title': 'Driver Verification', 'icon': Icons.verified_user, 'color': const Color(0xFF14b8a6)},
+      {'title': 'Share Trip', 'icon': Icons.share, 'color': const Color(0xFF6366f1)},
     ];
 
     if (isTablet) {
@@ -243,26 +269,30 @@ class ResponsiveHome extends StatelessWidget {
   // Individual Feature Card
   Widget _buildFeatureCard(String title, IconData icon, Color color, bool isTablet) {
     return Container(
-      padding: EdgeInsets.all(isTablet ? 20.0 : 16.0),
+      padding: EdgeInsets.all(isTablet ? 24.0 : 20.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: color.withOpacity(0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
-        border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        border: Border.all(color: Colors.grey.withOpacity(0.1), width: 1),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.all(isTablet ? 16.0 : 12.0),
+            padding: EdgeInsets.all(isTablet ? 18.0 : 14.0),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              gradient: LinearGradient(
+                colors: [color.withOpacity(0.1), color.withOpacity(0.2)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
               borderRadius: BorderRadius.circular(isTablet ? 16 : 12),
             ),
             child: Icon(
@@ -291,11 +321,25 @@ class ResponsiveHome extends StatelessWidget {
   // Footer Section with responsive buttons
   Widget _buildFooterSection(BuildContext context, bool isTablet) {
     return Container(
-      padding: EdgeInsets.all(isTablet ? 24.0 : 16.0),
+      padding: EdgeInsets.all(isTablet ? 32.0 : 24.0),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: [
+            Colors.grey[50]!,
+            Colors.white,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -316,16 +360,17 @@ class ResponsiveHome extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[600],
+                      backgroundColor: const Color(0xFF667eea),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
+                      elevation: 4,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     child: Text(
                       'Book a Ride',
-                      style: TextStyle(fontSize: isTablet ? 18 : 16),
+                      style: TextStyle(fontSize: isTablet ? 18 : 16, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -336,15 +381,16 @@ class ResponsiveHome extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      side: BorderSide(color: Colors.blue[600]!),
+                      side: BorderSide(color: const Color(0xFF667eea), width: 2),
                     ),
                     child: Text(
                       'Become a Driver',
                       style: TextStyle(
                         fontSize: isTablet ? 18 : 16,
-                        color: Colors.blue[600],
+                        color: const Color(0xFF667eea),
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -359,11 +405,12 @@ class ResponsiveHome extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[600],
+                      backgroundColor: const Color(0xFF667eea),
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
+                      elevation: 4,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     child: const Text(
@@ -380,15 +427,16 @@ class ResponsiveHome extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      side: BorderSide(color: Colors.blue[600]!),
+                      side: BorderSide(color: const Color(0xFF667eea), width: 2),
                     ),
                     child: Text(
                       'Become a Driver',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.blue[600],
+                        color: const Color(0xFF667eea),
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
