@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'flutter_concepts_demo.dart';
 
 class ResponsiveHome extends StatelessWidget {
   const ResponsiveHome({super.key});
@@ -60,6 +61,23 @@ class ResponsiveHome extends StatelessWidget {
             ),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const FlutterConceptsDemoScreen(),
+            ),
+          );
+        },
+        backgroundColor: const Color(0xFF667eea),
+        icon: const Icon(Icons.school, color: Colors.white),
+        label: const Text(
+          'Learn Flutter',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        tooltip: 'Explore Widget Tree & Reactive UI',
       ),
     );
   }
