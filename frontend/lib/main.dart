@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'screens/auth_wrapper.dart';
 import 'screens/demo_home.dart';
+import 'screens/stateless_stateful_demo.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

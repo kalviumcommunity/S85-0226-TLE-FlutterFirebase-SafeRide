@@ -6,35 +6,56 @@ A comprehensive Flutter application for ride safety and management, built with c
 
 SafeRide is a Flutter-based mobile application designed to enhance ride safety through real-time monitoring, emergency features, and user-friendly interfaces. The project demonstrates modern Flutter development practices with Firebase integration, responsive design, and scalable architecture.
 
-## 🎯 Widget Tree & Reactive UI Demo
+## 🎯 StatelessWidget vs StatefulWidget Demo
 
-This project includes an interactive demonstration of Flutter's widget tree hierarchy and reactive UI model. The demo showcases:
+This project includes a comprehensive demonstration of Flutter's two fundamental widget types - StatelessWidget and StatefulWidget. The demo showcases:
 
 ### Key Features:
-- **Interactive Counter**: Demonstrates state changes with dynamic background colors
-- **Profile Card**: Multiple reactive elements including visibility, name changes, and elevation
-- **Animated Transitions**: Smooth UI transitions using AnimatedContainer and AnimatedOpacity
-- **Real-time Widget Tree Visualization**: Live hierarchy display within the app
+- **Static Components**: StatelessWidget examples for headers and info cards
+- **Interactive Counter**: StatefulWidget with dynamic color and size changes
+- **Theme Toggle**: Light/dark mode switching with animations
+- **Interactive Profile**: Expandable content with like functionality
+- **Real-time State Visualization**: See how setState() triggers UI updates
 
-### Widget Tree Hierarchy:
-```
-Scaffold
- ┣ AppBar
- ┣ AnimatedContainer (Background)
- ┃  ┗ Center
- ┃     ┗ SingleChildScrollView
- ┃         ┗ Column
- ┃             ┣ Container (Counter)
- ┃             ┣ AnimatedOpacity (Profile Card)
- ┃             ┃  ┗ AnimatedContainer
- ┃             ┗ Container (Control Panel)
+### Widget Types Demonstrated:
+```dart
+// StatelessWidget Example
+class AppHeader extends StatelessWidget {
+  final String title;
+  const AppHeader({required this.title});
+  @override
+  Widget build(BuildContext context) {
+    return Text(title); // Static content
+  }
+}
+
+// StatefulWidget Example
+class InteractiveCounter extends StatefulWidget {
+  @override
+  State<InteractiveCounter> createState() => _InteractiveCounterState();
+}
+
+class _InteractiveCounterState extends State<InteractiveCounter> {
+  int _counter = 0;
+  void _incrementCounter() {
+    setState(() {
+      _counter++; // Triggers UI rebuild
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Text('$_counter'); // Dynamic content
+  }
+}
 ```
 
-### Reactive UI Examples:
-- **setState() Implementation**: State-driven UI updates
-- **Efficient Rebuilding**: Only affected widgets are re-rendered
-- **Animation Integration**: Smooth transitions with state changes
-- **Multiple State Variables**: Complex state management scenarios
+### When to Use Each Type:
+- **StatelessWidget**: Static content, headers, labels, read-only displays
+- **StatefulWidget**: Interactive elements, forms, animations, dynamic data
+
+### Demo Files:
+- **`lib/screens/stateless_stateful_demo.dart`** - Main widget types demonstration
+- **`STATELESS_STATEFUL_DEMO.md`** - Comprehensive documentation and examples
 
 ## Project Structure
 
@@ -48,9 +69,11 @@ This Flutter project follows a well-organized structure that supports scalabilit
 - **`assets/`** - Static resources (images, fonts, etc.)
 
 ### Demo Files:
-- **`lib/screens/demo_home.dart`** - Welcome screen for the widget tree demo
-- **`lib/screens/widget_tree_demo.dart`** - Main interactive demonstration
-- **`WIDGET_TREE_DEMO.md`** - Comprehensive documentation of the demo
+- **`lib/screens/demo_home.dart`** - Welcome screen for all demos
+- **`lib/screens/stateless_stateful_demo.dart`** - Widget types demonstration
+- **`lib/screens/widget_tree_demo.dart`** - Widget tree and reactive UI demo
+- **`STATELESS_STATEFUL_DEMO.md`** - Comprehensive widget types documentation
+- **`WIDGET_TREE_DEMO.md`** - Widget tree and reactive UI documentation
 
 ### Technology Stack:
 - **Flutter** - Cross-platform UI framework
@@ -89,25 +112,31 @@ cp .env.example .env
 flutter run
 ```
 
-## Widget Tree & Reactive UI Demo
+## StatelessWidget vs StatefulWidget Demo
 
-### What is a Widget Tree?
-A widget tree is Flutter's way of representing the UI as a hierarchical structure where each widget is a node that can contain child widgets. This tree structure allows Flutter to efficiently manage rendering and updates.
+### What are StatelessWidget and StatefulWidget?
 
-### How Does the Reactive Model Work?
-Flutter's reactive UI model automatically rebuilds widgets when their state changes. When you call `setState()`, Flutter marks the widget as "dirty" and schedules a rebuild, efficiently updating only the parts of the UI that need to change.
+**StatelessWidget**: A widget that does not maintain any mutable state. Once built, it remains unchanged until its parent rebuilds it with new data. Perfect for static UI components like headers, labels, and icons.
 
-### Why Does Flutter Rebuild Only Parts of the Tree?
-Flutter uses a diffing algorithm to compare the previous and current widget trees, rebuilding only the widgets that have changed. This approach provides:
-- **Better Performance**: Minimal computational overhead
-- **Smooth Animations**: Efficient transition handling
-- **Resource Optimization**: Reduced memory and CPU usage
+**StatefulWidget**: A widget that maintains internal state and can rebuild its UI dynamically when the state changes. Essential for interactive elements like forms, counters, and animations.
+
+### How does the reactive model work?
+
+When you call `setState()` in a StatefulWidget, Flutter marks the widget as "dirty" and schedules a rebuild. The framework then efficiently updates only the parts of the UI that need to change, providing smooth performance.
+
+### Why is understanding widget types important?
+
+1. **Performance**: StatelessWidget is more performant for static content
+2. **Maintainability**: Choosing the right widget type makes code easier to understand
+3. **User Experience**: Proper state management creates responsive, interactive apps
+4. **Development Efficiency**: Understanding widget types helps build scalable applications
 
 ### Interactive Demo Features:
-1. **Counter with Dynamic Background**: Shows how state changes affect multiple UI elements
-2. **Profile Card Animations**: Demonstrates visibility, elevation, and content changes
-3. **Control Panel**: Centralized state management with reset functionality
-4. **Real-time Hierarchy Display**: Visual representation of the current widget tree
+1. **Static Components**: StatelessWidget examples showing immutable UI
+2. **Interactive Counter**: StatefulWidget with dynamic styling based on state
+3. **Theme Toggle**: Demonstrates state-driven theme changes
+4. **Profile Card**: Shows complex state management with multiple interactions
+5. **Real-time Visualization**: See how setState() triggers selective UI updates
 
 ## Development Guidelines
 
@@ -150,6 +179,7 @@ A well-organized structure improves teamwork by:
 - [Firebase for Flutter](https://firebase.google.com/docs/flutter/setup)
 - [Dart Language Guide](https://dart.dev/guides)
 - [Material Design Guidelines](https://material.io/design)
+- [Widget Types Demo Documentation](./STATELESS_STATEFUL_DEMO.md)
 - [Widget Tree & Reactive UI Demo Documentation](./WIDGET_TREE_DEMO.md)
 
 ## Contributing
