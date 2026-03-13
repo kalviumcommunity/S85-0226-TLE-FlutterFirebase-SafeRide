@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'widget_tree_demo.dart';
 import 'stateless_stateful_demo.dart';
+import 'debug_demo_screen.dart';
 
 class DemoHome extends StatelessWidget {
   const DemoHome({super.key});
@@ -56,7 +58,7 @@ class DemoHome extends StatelessWidget {
 
                 // Title Section
                 const Text(
-                  'Flutter Learning Concepts',
+                  'Flutter Development Tools Demo',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -114,6 +116,7 @@ class DemoHome extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
+                          debugPrint('Widget Tree Demo button pressed! Navigating to WidgetTreeDemo...');
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -179,6 +182,44 @@ class DemoHome extends StatelessWidget {
                             ),
                             SizedBox(width: 8),
                             Icon(Icons.widgets),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          debugPrint('Debug Demo button pressed! Opening Debug Console Demo...');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const DebugDemoScreen(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          elevation: 5,
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Debug Console Demo',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Icon(Icons.bug_report),
                           ],
                         ),
                       ),
