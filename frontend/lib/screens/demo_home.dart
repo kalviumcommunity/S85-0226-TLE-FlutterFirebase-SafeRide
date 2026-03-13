@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'widget_tree_demo.dart';
+import 'stateless_stateful_demo.dart';
+import 'debug_demo_screen.dart';
 
 class DemoHome extends StatelessWidget {
   const DemoHome({super.key});
@@ -8,7 +11,7 @@ class DemoHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Widget Tree Demo Home'),
+        title: const Text('Flutter Concepts Demo Home'),
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
       ),
@@ -55,7 +58,7 @@ class DemoHome extends StatelessWidget {
 
                 // Title Section
                 const Text(
-                  'Widget Tree & Reactive UI',
+                  'Flutter Development Tools Demo',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -67,7 +70,7 @@ class DemoHome extends StatelessWidget {
                 const SizedBox(height: 12),
 
                 Text(
-                  'Explore Flutter\'s widget hierarchy and reactive state management',
+                  'Explore fundamental Flutter concepts through interactive demos',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey.shade700,
@@ -82,23 +85,23 @@ class DemoHome extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _buildFeatureCard(
-                      icon: Icons.widgets,
+                      icon: Icons.account_tree,
                       title: 'Widget Tree',
                       description: 'Hierarchical structure',
                       color: Colors.blue,
                     ),
                     const SizedBox(width: 16),
                     _buildFeatureCard(
-                      icon: Icons.autorenew,
-                      title: 'Reactive UI',
-                      description: 'State-driven updates',
+                      icon: Icons.widgets,
+                      title: 'Widget Types',
+                      description: 'Stateless vs Stateful',
                       color: Colors.green,
                     ),
                     const SizedBox(width: 16),
                     _buildFeatureCard(
-                      icon: Icons.speed,
-                      title: 'Performance',
-                      description: 'Efficient rebuilding',
+                      icon: Icons.autorenew,
+                      title: 'Reactive UI',
+                      description: 'State-driven updates',
                       color: Colors.orange,
                     ),
                   ],
@@ -106,42 +109,122 @@ class DemoHome extends StatelessWidget {
 
                 const SizedBox(height: 40),
 
-                // Start Demo Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const WidgetTreeDemo(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      elevation: 5,
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Start Interactive Demo',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                // Start Demo Buttons
+                Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          debugPrint('Widget Tree Demo button pressed! Navigating to WidgetTreeDemo...');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const WidgetTreeDemo(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.deepPurple,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
+                          elevation: 5,
                         ),
-                        SizedBox(width: 8),
-                        Icon(Icons.arrow_forward),
-                      ],
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Widget Tree Demo',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Icon(Icons.arrow_forward),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const StatelessWidgetStatefulWidgetDemo(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          elevation: 5,
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Widget Types Demo',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Icon(Icons.widgets),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          debugPrint('Debug Demo button pressed! Opening Debug Console Demo...');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const DebugDemoScreen(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          elevation: 5,
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Debug Console Demo',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Icon(Icons.bug_report),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 20),
@@ -167,11 +250,11 @@ class DemoHome extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       ...[
-                        '• Interactive counter with state changes',
-                        '• Dynamic background color transitions',
-                        '• Profile card with multiple interactive elements',
-                        '• Widget visibility animations',
-                        '• Real-time widget tree visualization',
+                        '• Widget tree hierarchy and structure',
+                        '• StatelessWidget vs StatefulWidget differences',
+                        '• Interactive state management examples',
+                        '• Reactive UI patterns and best practices',
+                        '• Performance optimization techniques',
                       ].map(
                         (item) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 2),
