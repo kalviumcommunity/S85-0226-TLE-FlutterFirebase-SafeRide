@@ -5,6 +5,8 @@ import 'firebase_options.dart';
 import 'screens/auth_wrapper.dart';
 import 'screens/demo_home.dart';
 import 'screens/stateless_stateful_demo.dart';
+import 'screens/home_screen.dart';
+import 'screens/second_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +36,11 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const DemoHome(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomeScreen(),
+        '/second': (context) => const SecondScreen(),
+      },
     );
   }
 }
