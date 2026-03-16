@@ -282,7 +282,7 @@ class ThemeToggle extends StatefulWidget {
 
 class _ThemeToggleState extends State<ThemeToggle> {
   bool _isDarkMode = false;
-  List<String> _quotes = [
+  final List<String> _quotes = [
     "Stateless widgets are predictable and efficient",
     "Stateful widgets bring interactivity to life",
     "Understanding both types makes you a better Flutter developer",
@@ -336,7 +336,7 @@ class _ThemeToggleState extends State<ThemeToggle> {
                 onChanged: (value) {
                   _toggleTheme();
                 },
-                activeColor: Colors.deepPurple,
+                activeThumbColor: Colors.deepPurple,
               ),
             ],
           ),
@@ -425,7 +425,7 @@ class _InteractiveProfileState extends State<InteractiveProfile> {
   bool _isExpanded = false;
   int _likes = 42;
   bool _isLiked = false;
-  List<String> _skills = ['Flutter', 'Dart', 'Firebase', 'UI/UX'];
+  final List<String> _skills = ['Flutter', 'Dart', 'Firebase', 'UI/UX'];
   List<String> _displayedSkills = [];
 
   @override

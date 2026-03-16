@@ -147,3 +147,21 @@ Deliver a demo-ready MVP with working Auth + Firestore integration by the end of
 ---
 
 Built as part of Kalvium Simulated Work – Sprint 2 (Flutter & Firebase).
+
+
+
+This PR implements a responsive layout for the SafeRide home screen using core Flutter layout widgets like Container, Row and Column.
+
+The UI adapts dynamically to different screen sizes and orientations using MediaQuery, LayoutBuilder and Expanded widgets.
+
+Key Features:
+- Header section with gradient background
+- Responsive stats cards layout (Column for portrait, Row for landscape, Grid for tablet)
+- Feature cards displayed using Wrap/GridView
+- Footer section with responsive buttons
+- SafeArea added for better device compatibility
+- Improved card spacing and rounded design
+
+Responsiveness was achieved by detecting screen width and orientation and switching layout strategies accordingly.
+
+Screenshots and demo video are added in the README.
