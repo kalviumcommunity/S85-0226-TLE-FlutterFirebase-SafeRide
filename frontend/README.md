@@ -6,6 +6,68 @@ A comprehensive Flutter application for ride safety and management, built with c
 
 SafeRide is a Flutter-based mobile application designed to enhance ride safety through real-time monitoring, emergency features, and user-friendly interfaces. The project demonstrates modern Flutter development practices with Firebase integration, responsive design, and scalable architecture.
 
+## 🚀 Multi-Screen Navigation Demo
+
+This project implements comprehensive multi-screen navigation using Flutter's Navigator and named routes. The demo showcases how to build scalable navigation flows for real-world applications.
+
+### Key Features:
+- **Named Routes**: Clean and maintainable route definitions
+- **Data Passing**: Demonstration of passing data between screens
+- **Smooth Transitions**: Material Design navigation animations
+- **Stack Management**: Understanding of Flutter's navigation stack
+
+### Navigation Implementation:
+
+#### 1. Route Configuration in main.dart
+```dart
+MaterialApp(
+  initialRoute: '/',
+  routes: {
+    '/': (context) => const HomeScreen(),
+    '/second': (context) => const SecondScreen(),
+  },
+)
+```
+
+#### 2. Navigation Methods
+```dart
+// Navigate to another screen
+Navigator.pushNamed(context, '/second');
+
+// Navigate with data
+Navigator.pushNamed(context, '/second', arguments: 'Hello from Home!');
+
+// Return to previous screen
+Navigator.pop(context);
+```
+
+#### 3. Receiving Data in Destination Screen
+```dart
+@override
+Widget build(BuildContext context) {
+  final message = ModalRoute.of(context)?.settings.arguments as String?;
+  return Scaffold(
+    body: Center(child: Text(message ?? 'No data received')),
+  );
+}
+```
+
+### Navigation Flow:
+1. **Home Screen** (`/`) - Starting point with navigation buttons
+2. **Second Screen** (`/second`) - Destination screen that can receive data
+3. **Back Navigation** - Returns to previous screen using `Navigator.pop()`
+
+### Demo Files:
+- **`lib/screens/home_screen.dart`** - Main navigation screen with multiple navigation options
+- **`lib/screens/second_screen.dart`** - Destination screen with data reception
+- **`lib/test_navigation.dart`** - Standalone navigation test app
+
+### Benefits of Named Routes:
+- **Maintainability**: Centralized route management
+- **Type Safety**: Compile-time route validation
+- **Scalability**: Easy to add new screens
+- **Code Reusability**: Consistent navigation patterns
+
 ## 🎯 StatelessWidget vs StatefulWidget Demo
 
 This project includes a comprehensive demonstration of Flutter's two fundamental widget types - StatelessWidget and StatefulWidget. The demo showcases:
