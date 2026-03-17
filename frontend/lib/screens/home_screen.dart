@@ -5,11 +5,13 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('SafeRide - Home'),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
       ),
       body: Center(
         child: Column(
@@ -34,8 +36,8 @@ class HomeScreen extends StatelessWidget {
                 Navigator.pushNamed(context, '/second');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
-                foregroundColor: Colors.white,
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
               child: const Text('Go to Second Screen'),
@@ -51,6 +53,18 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
               child: const Text('Go to Second Screen with Message'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/scroll');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorScheme.tertiary,
+                foregroundColor: colorScheme.onTertiary,
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              ),
+              child: const Text('Open Scrollable Views Demo'),
             ),
           ],
         ),

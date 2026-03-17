@@ -12,7 +12,7 @@ Future<void> main() async {
 
   // Load environment variables
   await dotenv.load(fileName: ".env");
-
+                                           
   // Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
