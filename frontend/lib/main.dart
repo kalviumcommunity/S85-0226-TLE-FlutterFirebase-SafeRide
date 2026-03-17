@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+
 import 'screens/home_screen.dart';
 import 'screens/second_screen.dart';
+import 'screens/scrollable_views.dart';   // ⭐ ADD THIS
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load
-  // environment variables
+  // Load environment variables
   await dotenv.load(fileName: ".env");
 
   // Initialize Firebase
@@ -34,10 +35,14 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
+
       initialRoute: '/',
+
       routes: {
         '/': (context) => const HomeScreen(),
         '/second': (context) => const SecondScreen(),
+
+        '/scroll': (context) => const ScrollableViews(), // ⭐ ADD THIS
       },
     );
   }
