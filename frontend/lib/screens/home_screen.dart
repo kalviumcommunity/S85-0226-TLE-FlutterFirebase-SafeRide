@@ -66,6 +66,12 @@ class HomeScreen extends StatelessWidget {
               ),
               child: const Text('Open Scrollable Views Demo'),
             ),
+            ElevatedButton(
+  onPressed: () {
+    Navigator.pushNamed(context, '/state');
+  },
+  child: const Text("Open State Demo"),
+),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
