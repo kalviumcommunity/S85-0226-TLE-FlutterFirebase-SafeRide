@@ -66,6 +66,18 @@ class HomeScreen extends StatelessWidget {
               ),
               child: const Text('Open Scrollable Views Demo'),
             ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/user-input');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorScheme.secondary,
+                foregroundColor: colorScheme.onSecondary,
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              ),
+              child: const Text('Open User Input Form'),
+            ),
           ],
         ),
       ),
