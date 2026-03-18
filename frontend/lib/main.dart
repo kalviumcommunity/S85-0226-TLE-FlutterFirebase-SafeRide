@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'screens/home_screen.dart';
 import 'screens/second_screen.dart';
 import 'screens/scrollable_views.dart';   // ⭐ ADD THIS
+import 'screens/user_input_form.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         '/second': (context) => const SecondScreen(),
 
         '/scroll': (context) => const ScrollableViews(), // ⭐ ADD THIS
+        '/user-input': (context) => const UserInputForm(),
       },
     );
   }
