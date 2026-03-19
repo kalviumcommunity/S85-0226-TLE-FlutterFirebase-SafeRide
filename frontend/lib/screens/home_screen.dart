@@ -90,6 +90,19 @@ ElevatedButton(
               ),
               child: const Text('Open User Input Form'),
             ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, '/assets');
+              },
+              icon: const Icon(Icons.image),
+              label: const Text('Assets Demo'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              ),
+            ),
           ],
         ),
       ),
