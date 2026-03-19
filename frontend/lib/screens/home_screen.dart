@@ -103,6 +103,19 @@ ElevatedButton(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
             ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, '/animations');
+              },
+              icon: const Icon(Icons.animation),
+              label: const Text('Animations & Transitions Demo'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              ),
+            ),
           ],
         ),
       ),
