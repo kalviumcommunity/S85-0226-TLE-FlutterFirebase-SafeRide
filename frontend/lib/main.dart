@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'screens/state_management_demo.dart';
+import 'screens/responsive_demo.dart';
 import 'screens/home_screen.dart';
 import 'screens/second_screen.dart';
 import 'screens/scrollable_views.dart';   // ⭐ ADD THIS
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         '/state': (context) => const StateManagementDemo(),
         '/scroll': (context) => const ScrollableViews(), // ⭐ ADD THIS
         '/user-input': (context) => const UserInputForm(),
+        '/responsive': (context) => const ResponsiveDemo(),
       },
     );
   }
