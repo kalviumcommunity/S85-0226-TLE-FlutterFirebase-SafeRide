@@ -72,6 +72,12 @@ class HomeScreen extends StatelessWidget {
   },
   child: const Text("Open State Demo"),
 ),
+ElevatedButton(
+  onPressed: () {
+    Navigator.pushNamed(context, '/responsive');
+  },
+  child: const Text("Open Responsive Demo"),
+),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
