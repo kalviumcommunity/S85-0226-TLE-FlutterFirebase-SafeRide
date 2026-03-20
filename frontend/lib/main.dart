@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'screens/bottom_nav_demo.dart';
 import 'screens/state_management_demo.dart';
 import 'screens/responsive_demo.dart';
 import 'screens/home_screen.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         '/responsive': (context) => const ResponsiveDemo(),
         '/assets': (context) => const AssetDemoScreen(),
         '/animations': (context) => const AnimationsDemoScreen(),
+        '/bottom': (context) => const BottomNavDemo(),
       },
     );
   }

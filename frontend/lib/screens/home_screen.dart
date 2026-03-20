@@ -103,6 +103,12 @@ ElevatedButton(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
             ),
+            ElevatedButton(
+  onPressed: () {
+    Navigator.pushNamed(context, '/bottom');
+  },
+  child: const Text("Open Bottom Navigation"),
+),
             const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: () {
