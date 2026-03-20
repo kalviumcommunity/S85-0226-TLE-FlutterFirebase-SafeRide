@@ -11,6 +11,7 @@ import 'screens/scrollable_views.dart';   // ⭐ ADD THIS
 import 'screens/user_input_form.dart';
 import 'screens/asset_demo_screen.dart';
 import 'screens/animations_demo_screen.dart';
+import 'screens/responsive_layout.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         '/assets': (context) => const AssetDemoScreen(),
         '/animations': (context) => const AnimationsDemoScreen(),
         '/bottom': (context) => const BottomNavDemo(),
+        '/responsive-layout': (context) => const ResponsiveLayout(),
       },
     );
   }

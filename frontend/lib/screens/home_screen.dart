@@ -112,6 +112,19 @@ ElevatedButton(
             const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: () {
+                Navigator.pushNamed(context, '/responsive-layout');
+              },
+              icon: const Icon(Icons.devices),
+              label: const Text('Responsive Layout Demo'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {
                 Navigator.pushNamed(context, '/animations');
               },
               icon: const Icon(Icons.animation),
