@@ -16,8 +16,79 @@ SafeRide enables users to:
 ### Overview
 This project demonstrates a fully responsive mobile interface that adapts seamlessly across different screen sizes, orientations, and device types using Flutter's powerful layout system.
 
+### New Responsive Layout Screen
+We've implemented a dedicated **Responsive Layout Dashboard** (`/responsive-layout`) that showcases advanced responsive design techniques using **Rows, Columns, and Containers**.
+
+#### Key Implementation Details:
+
+**Screen Detection Using MediaQuery:**
+```dart
+final screenWidth = MediaQuery.of(context).size.width;
+final screenHeight = MediaQuery.of(context).size.height;
+final isTablet = screenWidth > 600;
+final isLargeScreen = screenWidth > 1200;
+```
+
+**Three Layout Strategies:**
+1. **Phone Layout** (< 600px): Vertical stacking with compact design
+2. **Tablet Layout** (600px - 1200px): Split-screen with side-by-side panels
+3. **Large Screen Layout** (> 1200px): Multi-column dashboard layout
+
+**Container Usage Examples:**
+```dart
+// Header container with gradient and shadow
+Container(
+  padding: EdgeInsets.all(isTablet ? 24.0 : 16.0),
+  decoration: BoxDecoration(
+    gradient: LinearGradient(
+      colors: [Colors.grey.shade50, Colors.grey.shade100],
+    ),
+  ),
+  child: // content
+)
+
+// Feature cards with rounded corners and shadows
+Container(
+  decoration: BoxDecoration(
+    color: color,
+    borderRadius: BorderRadius.circular(12),
+    boxShadow: [
+      BoxShadow(
+        color: color.withOpacity(0.3),
+        blurRadius: 8,
+        offset: const Offset(0, 4),
+      ),
+    ],
+  ),
+  child: // card content
+)
+```
+
+**Row and Column Implementations:**
+```dart
+// Phone: Vertical Column layout
+Column(
+  children: [
+    Container(header),
+    SizedBox(height: 16),
+    Expanded(child: Row(features)), // Horizontal feature row
+    SizedBox(height: 16),
+    Container(status panel),
+  ],
+)
+
+// Tablet: Side-by-side Row layout
+Row(
+  children: [
+    Expanded(child: Column(header + features)),
+    SizedBox(width: 20),
+    Expanded(child: Container(status panel)),
+  ],
+)
+```
+
 ### Key Features
-- **Adaptive Layout**: Automatically adjusts between phone and tablet layouts
+- **Adaptive Layout**: Automatically adjusts between phone, tablet, and large screen layouts
 - **Orientation Support**: Optimized for both portrait and landscape modes
 - **Dynamic Sizing**: Text, padding, and components scale based on screen dimensions
 - **Flexible Grids**: Uses different grid configurations for various screen sizes
