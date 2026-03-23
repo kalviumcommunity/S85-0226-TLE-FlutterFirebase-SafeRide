@@ -425,3 +425,131 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **Testing Across Platforms**: Assets may behave differently on web, mobile, and desktop - thorough testing is important
 
 This implementation demonstrates professional-grade asset management that can scale to large Flutter applications with complex UI requirements.
+
+## 📜 Scrollable Views with ListView and GridView
+
+This project demonstrates comprehensive implementation of scrollable widgets in Flutter, showcasing both ListView and GridView components for efficient data display and user interaction.
+
+### Key Features:
+- **Horizontal ListView**: Smooth scrolling cards with dynamic colors
+- **GridView Builder**: Two-dimensional grid layout with optimized performance
+- **Material Design Integration**: Consistent theming and styling
+- **Responsive Layout**: Adapts to different screen sizes
+- **Performance Optimization**: Uses builder constructors for efficient memory usage
+
+### Implementation Overview:
+
+#### 1. ListView Implementation
+```dart
+SizedBox(
+  height: 180,
+  child: ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: 6,
+    itemBuilder: (context, index) {
+      final itemColor = Colors.primaries[index % Colors.primaries.length];
+      return Container(
+        width: 140,
+        margin: const EdgeInsets.only(right: 12),
+        decoration: BoxDecoration(
+          color: itemColor.withValues(alpha: 0.22),
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: itemColor.withValues(alpha: 0.55)),
+        ),
+        child: Center(
+          child: Text('Card ${index + 1}'),
+        ),
+      );
+    },
+  ),
+)
+```
+
+#### 2. GridView Implementation
+```dart
+GridView.builder(
+  physics: const NeverScrollableScrollPhysics(),
+  shrinkWrap: true,
+  itemCount: 8,
+  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    crossAxisSpacing: 12,
+    mainAxisSpacing: 12,
+    childAspectRatio: 1.2,
+  ),
+  itemBuilder: (context, index) {
+    final itemColor = Colors.primaries[index % Colors.primaries.length];
+    return Container(
+      decoration: BoxDecoration(
+        color: itemColor,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Center(
+        child: Text(
+          'Tile ${index + 1}',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  },
+)
+```
+
+### Performance Benefits:
+
+#### ListView.builder() Advantages:
+- **Lazy Loading**: Only renders visible items, reducing memory usage
+- **Smooth Scrolling**: Optimized for large datasets without performance degradation
+- **Dynamic Content**: Easily handles data from APIs or databases
+- **Memory Efficiency**: Recycles widgets as users scroll
+
+#### GridView.builder() Advantages:
+- **Grid Optimization**: Efficient two-dimensional layout management
+- **Flexible Sizing**: Customizable cross-axis count and spacing
+- **Responsive Design**: Adapts to screen size changes automatically
+- **Scroll Performance**: Maintains smooth performance with many items
+
+### Usage in SafeRide Context:
+- **ListView**: Perfect for displaying ride history, notifications, or driver lists
+- **GridView**: Ideal for service categories, vehicle options, or safety feature grids
+- **Combined Layout**: Enables rich, data-dense interfaces for comprehensive user experiences
+
+### Navigation Integration:
+The scrollable views are integrated into the main navigation system:
+```dart
+routes: {
+  '/scroll': (context) => const ScrollableViews(),
+}
+```
+
+### Demo Files:
+- **`lib/screens/scrollable_views.dart`** - Complete scrollable widgets implementation
+- **Access**: Navigate to `/scroll` route or use navigation buttons from HomeScreen
+
+### Testing Verification:
+✅ **Horizontal Scrolling**: ListView scrolls smoothly with card-based layout  
+✅ **Grid Display**: GridView shows 2x4 grid with proper spacing and colors  
+✅ **Performance**: No lag or overflow errors with multiple items  
+✅ **Responsive**: Layout adapts to different screen sizes  
+✅ **Theming**: Consistent with app's Material Design theme  
+
+### Reflection on Scrolling Widgets:
+
+#### How do ListView and GridView improve UI efficiency?
+- **Memory Optimization**: Builder constructors only create widgets for visible items
+- **Performance**: Lazy loading prevents UI lag with large datasets
+- **User Experience**: Smooth, responsive scrolling enhances app usability
+- **Scalability**: Handle hundreds or thousands of items without performance degradation
+
+#### Why are builder constructors recommended for large datasets?
+- **Resource Management**: Minimizes memory footprint by recycling widgets
+- **Rendering Speed**: Only builds what's visible on screen
+- **Dynamic Content**: Easily adapts to changing data sources
+- **Battery Life**: Reduced CPU usage extends device battery life
+
+#### Common performance pitfalls to avoid:
+- **Static Lists**: Avoid using ListView() with many items - use ListView.builder()
+- **Nested Scrolling**: Prevent multiple scrollable widgets in each other without proper configuration
+- **Heavy Widgets**: Keep itemBuilder functions lightweight and avoid complex computations
+- **Missing Keys**: Use proper keys when widgets need unique identification
+- **Inefficient Rebuilds**: Minimize setState() calls and use const widgets where possible
