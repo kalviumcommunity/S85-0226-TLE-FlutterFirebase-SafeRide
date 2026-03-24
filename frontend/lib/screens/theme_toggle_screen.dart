@@ -18,7 +18,7 @@ class ThemeToggleScreen extends StatelessWidget {
 
       body: Center(
         child: SwitchListTile(
-          title: const Text("Dark Mode"),
+          title: const Text("Enable Dark Mode"),
           value: isDark,
           onChanged: (value) {
             context.read<ThemeState>().toggleTheme(value);

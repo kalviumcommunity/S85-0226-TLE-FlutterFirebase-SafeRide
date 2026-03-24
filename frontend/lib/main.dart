@@ -13,6 +13,8 @@ import 'screens/asset_demo_screen.dart';
 import 'screens/animations_demo_screen.dart';
 import 'screens/responsive_layout.dart';
 
+import 'theme/theme_state.dart';
+import 'screens/theme_toggle_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -55,6 +57,7 @@ class MyApp extends StatelessWidget {
         '/animations': (context) => const AnimationsDemoScreen(),
         '/bottom': (context) => const BottomNavDemo(),
         '/responsive-layout': (context) => const ResponsiveLayout(),
+        '/theme': (context) => const ThemeToggleScreen(),
       },
     );
   }
