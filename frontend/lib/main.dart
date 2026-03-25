@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'firebase_options.dart';
-import 'screens/bottom_nav_demo.dart';
-import 'screens/state_management_demo.dart';
-import 'screens/responsive_demo.dart';
-import 'screens/auth_screen.dart';
-import 'screens/home_screen.dart';
-import 'screens/second_screen.dart';
-import 'screens/scrollable_views.dart';   // ⭐ ADD THIS
-import 'screens/user_input_form.dart';
-import 'screens/asset_demo_screen.dart';
-import 'screens/animations_demo_screen.dart';
-import 'screens/responsive_layout.dart';
+import 'package:provider/provider.dart';
+import 'core/services/firebase_service.dart';
+import 'core/theme/theme_provider.dart';
+import 'features/auth/providers/auth_provider.dart';
+import 'features/routes/providers/route_provider.dart';
+import 'navigation/app_router.dart';
+import 'features/auth/presentation/screens/login_screen.dart';
+import 'navigation/bottom_nav.dart';
 
-import 'theme/theme_state.dart';
-import 'screens/theme_toggle_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -24,9 +16,7 @@ Future<void> main() async {
   await dotenv.load(fileName: ".env");
                                            
   // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await FirebaseService.initializeFirebase();
 
   runApp(const MyApp());
 }
@@ -36,47 +26,42 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'SafeRide',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-        ),
-        useMaterial3: true,
-      ),
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => RouteProvider()),
+      ],
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            title: 'SafeRide',
+            debugShowCheckedModeBanner: false,
+            theme: themeProvider.lightTheme,
+            darkTheme: themeProvider.darkTheme,
+            themeMode: themeProvider.themeMode,
+            onGenerateRoute: AppRouter.generateRoute,
+            home: StreamBuilder(
+              stream: Provider.of<AuthProvider>(context).authStateChanges,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
 
-          if (snapshot.hasData) {
-            return const HomeScreen();
-          }
+                if (snapshot.hasData) {
+                  return const BottomNavigation();
+                }
 
-          return const AuthScreen();
+                return const LoginScreen();
+              },
+            ),
+          );
         },
       ),
-
-      routes: {
-        '/home': (context) => const HomeScreen(),
-        '/second': (context) => const SecondScreen(),
-        '/state': (context) => const StateManagementDemo(),
-        '/scroll': (context) => const ScrollableViews(),
-        '/user-input': (context) => const UserInputForm(),
-        '/responsive': (context) => const ResponsiveDemo(),
-        '/assets': (context) => const AssetDemoScreen(),
-        '/animations': (context) => const AnimationsDemoScreen(),
-        '/bottom': (context) => const BottomNavDemo(),
-        '/responsive-layout': (context) => const ResponsiveLayout(),
-        '/theme': (context) => const ThemeToggleScreen(),
-      },
     );
   }
 }
