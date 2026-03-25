@@ -12,6 +12,7 @@ import 'screens/user_input_form.dart';
 import 'screens/asset_demo_screen.dart';
 import 'screens/animations_demo_screen.dart';
 import 'screens/responsive_layout.dart';
+import 'screens/auth_wrapper.dart';
 
 import 'theme/theme_state.dart';
 import 'screens/theme_toggle_screen.dart';
@@ -43,14 +44,14 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-
-      initialRoute: '/',
+      // AuthWrapper handles auth state - routes to LoginScreen or ResponsiveHome
+      home: const AuthWrapper(),
 
       routes: {
-        '/': (context) => const HomeScreen(),
+        '/home': (context) => const HomeScreen(),
         '/second': (context) => const SecondScreen(),
         '/state': (context) => const StateManagementDemo(),
-        '/scroll': (context) => const ScrollableViews(), // ⭐ ADD THIS
+        '/scroll': (context) => const ScrollableViews(),
         '/user-input': (context) => const UserInputForm(),
         '/responsive': (context) => const ResponsiveDemo(),
         '/assets': (context) => const AssetDemoScreen(),
