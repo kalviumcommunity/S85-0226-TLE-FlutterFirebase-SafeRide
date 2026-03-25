@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../../widgets/layout/responsive_layout.dart';
 import '../../../../widgets/common/dashboard_card.dart';
 import '../../../../core/theme/theme_provider.dart';
+import '../../../routes/providers/route_provider.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -11,16 +12,20 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
-        return ResponsiveLayout(
-          mobile: _buildMobileLayout(context, themeProvider),
-          tablet: _buildTabletLayout(context, themeProvider),
-          desktop: _buildDesktopLayout(context, themeProvider),
+        return Consumer<RouteProvider>(
+          builder: (context, routeProvider, child) {
+            return ResponsiveLayout(
+              mobile: _buildMobileLayout(context, themeProvider, routeProvider),
+              tablet: _buildTabletLayout(context, themeProvider, routeProvider),
+              desktop: _buildDesktopLayout(context, themeProvider, routeProvider),
+            );
+          },
         );
       },
     );
   }
 
-  Widget _buildMobileLayout(BuildContext context, ThemeProvider themeProvider) {
+  Widget _buildMobileLayout(BuildContext context, ThemeProvider themeProvider, RouteProvider routeProvider) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
@@ -44,7 +49,7 @@ class DashboardScreen extends StatelessWidget {
             const SizedBox(height: 16),
             DashboardCard(
               title: 'Today\'s Routes',
-              subtitle: 'View and manage your routes',
+              subtitle: '${routeProvider.routesCount} routes available',
               icon: Icons.route,
               color: Colors.green,
             ),
@@ -55,13 +60,27 @@ class DashboardScreen extends StatelessWidget {
               icon: Icons.security,
               color: Colors.orange,
             ),
+            const SizedBox(height: 16),
+            DashboardCard(
+              title: 'Total Distance',
+              subtitle: '${_calculateTotalDistance(routeProvider).toStringAsFixed(1)} km',
+              icon: Icons.straighten,
+              color: Colors.purple,
+            ),
+            const SizedBox(height: 16),
+            DashboardCard(
+              title: 'Average Rating',
+              subtitle: '${_calculateAverageRating(routeProvider).toStringAsFixed(1)} ⭐',
+              icon: Icons.star,
+              color: Colors.amber,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTabletLayout(BuildContext context, ThemeProvider themeProvider) {
+  Widget _buildTabletLayout(BuildContext context, ThemeProvider themeProvider, RouteProvider routeProvider) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
@@ -87,8 +106,8 @@ class DashboardScreen extends StatelessWidget {
               color: Colors.blue,
             ),
             DashboardCard(
-              title: 'Today\'s Routes',
-              subtitle: 'View and manage your routes',
+              title: 'Routes',
+              subtitle: '${routeProvider.routesCount} total routes',
               icon: Icons.route,
               color: Colors.green,
             ),
@@ -99,11 +118,23 @@ class DashboardScreen extends StatelessWidget {
               color: Colors.orange,
             ),
             DashboardCard(
-              title: 'Theme Settings',
-              subtitle: themeProvider.isDarkMode ? 'Light Mode' : 'Dark Mode',
+              title: themeProvider.isDarkMode ? 'Light Mode' : 'Dark Mode',
+              subtitle: themeProvider.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
               icon: themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
               color: themeProvider.isDarkMode ? Colors.amber : Colors.grey,
               onTap: () => themeProvider.toggleTheme(),
+            ),
+            DashboardCard(
+              title: 'Total Distance',
+              subtitle: '${_calculateTotalDistance(routeProvider).toStringAsFixed(1)} km',
+              icon: Icons.straighten,
+              color: Colors.purple,
+            ),
+            DashboardCard(
+              title: 'Average Rating',
+              subtitle: '${_calculateAverageRating(routeProvider).toStringAsFixed(1)} ⭐',
+              icon: Icons.star,
+              color: Colors.amber,
             ),
           ],
         ),
@@ -111,7 +142,7 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDesktopLayout(BuildContext context, ThemeProvider themeProvider) {
+  Widget _buildDesktopLayout(BuildContext context, ThemeProvider themeProvider, RouteProvider routeProvider) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
@@ -137,8 +168,8 @@ class DashboardScreen extends StatelessWidget {
               color: Colors.blue,
             ),
             DashboardCard(
-              title: 'Today\'s Routes',
-              subtitle: 'View and manage your routes',
+              title: 'Routes',
+              subtitle: '${routeProvider.routesCount} total routes',
               icon: Icons.route,
               color: Colors.green,
             ),
@@ -149,7 +180,7 @@ class DashboardScreen extends StatelessWidget {
               color: Colors.orange,
             ),
             DashboardCard(
-              title: 'Theme Settings',
+              title: themeProvider.isDarkMode ? 'Light Mode' : 'Dark Mode',
               subtitle: themeProvider.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
               icon: themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
               color: themeProvider.isDarkMode ? Colors.amber : Colors.grey,
@@ -157,7 +188,7 @@ class DashboardScreen extends StatelessWidget {
             ),
             DashboardCard(
               title: 'Statistics',
-              subtitle: 'View your riding stats',
+              subtitle: '${_calculateTotalDistance(routeProvider).toStringAsFixed(1)} km total',
               icon: Icons.analytics,
               color: Colors.purple,
             ),
@@ -171,5 +202,43 @@ class DashboardScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  double _calculateTotalDistance(RouteProvider routeProvider) {
+    if (RouteProvider.useMockData) {
+      return routeProvider.mockRoutes.fold<double>(
+        0.0,
+        (sum, route) => sum + (route['distance'] ?? 0.0),
+      );
+    } else {
+      return routeProvider.routes.fold<double>(
+        0.0,
+        (sum, doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          return sum + (data['distance'] ?? 0.0);
+        },
+      );
+    }
+  }
+
+  double _calculateAverageRating(RouteProvider routeProvider) {
+    if (RouteProvider.useMockData) {
+      if (routeProvider.mockRoutes.isEmpty) return 0.0;
+      final totalRating = routeProvider.mockRoutes.fold<double>(
+        0.0,
+        (sum, route) => sum + (route['rating'] ?? 0.0),
+      );
+      return totalRating / routeProvider.mockRoutes.length;
+    } else {
+      if (routeProvider.routes.isEmpty) return 0.0;
+      final totalRating = routeProvider.routes.fold<double>(
+        0.0,
+        (sum, doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          return sum + (data['rating'] ?? 0.0);
+        },
+      );
+      return totalRating / routeProvider.routes.length;
+    }
   }
 }
