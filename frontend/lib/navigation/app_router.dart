@@ -8,14 +8,68 @@ class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RouteConstants.login:
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
+          transitionDuration: const Duration(milliseconds: 600),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(-1.0, 0.0),
+                end: Offset.zero,
+              ).animate(CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeInOutCubic,
+              )),
+              child: FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+            );
+          },
+        );
       case RouteConstants.signup:
-        return MaterialPageRoute(builder: (_) => const SignupScreen());
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => const SignupScreen(),
+          transitionDuration: const Duration(milliseconds: 600),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1.0, 0.0),
+                end: Offset.zero,
+              ).animate(CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeInOutCubic,
+              )),
+              child: FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+            );
+          },
+        );
       case RouteConstants.home:
       case RouteConstants.dashboard:
       case RouteConstants.routes:
       case RouteConstants.profile:
-        return MaterialPageRoute(builder: (_) => const BottomNavigation());
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => const BottomNavigation(),
+          transitionDuration: const Duration(milliseconds: 800),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return ScaleTransition(
+              scale: Tween<double>(
+                begin: 0.8,
+                end: 1.0,
+              ).animate(CurvedAnimation(
+                parent: animation,
+                curve: Curves.elasticOut,
+              )),
+              child: FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+            );
+          },
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(

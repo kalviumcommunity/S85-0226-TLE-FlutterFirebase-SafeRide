@@ -17,6 +17,20 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isFormVisible = false;
+  bool _isIconAnimated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Trigger animations after widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _isFormVisible = true;
+        _isIconAnimated = true;
+      });
+    });
+  }
 
   @override
   void dispose() {
@@ -60,19 +74,34 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Icon(
-                    Icons.directions_bike,
-                    size: 100,
-                    color: Colors.blue,
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 800),
+                    curve: Curves.elasticOut,
+                    transform: Matrix4.identity()
+                      ..scale(_isIconAnimated ? 1.0 : 0.0),
+                    child: const Icon(
+                      Icons.directions_bike,
+                      size: 100,
+                      color: Colors.blue,
+                    ),
                   ),
                   const SizedBox(height: 32),
-                  CustomTextField(
+                  AnimatedOpacity(
+                    opacity: _isFormVisible ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 600),
+                    curve: Curves.easeIn,
+                    child: AnimatedSlide(
+                      offset: Offset(0.0, _isFormVisible ? 0.0 : 0.3),
+                      duration: const Duration(milliseconds: 600),
+                      curve: Curves.easeOutCubic,
+                      child: CustomTextField(
                     label: 'Email',
                     hintText: 'Enter your email',
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     validator: Validators.validateEmail,
                     prefixIcon: const Icon(Icons.email),
+                  ),
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
@@ -83,11 +112,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     validator: Validators.validatePassword,
                     prefixIcon: const Icon(Icons.lock),
                   ),
+                  ),
                   const SizedBox(height: 24),
-                  CustomButton(
+                  AnimatedOpacity(
+                    opacity: _isFormVisible ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 800),
+                    curve: Curves.easeIn,
+                    child: CustomButton(
                     text: 'Login',
                     onPressed: _login,
                     isLoading: authProvider.isLoading,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   TextButton(
