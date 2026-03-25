@@ -174,6 +174,195 @@ GridView.count(
 - View Routes (real-time Firestore data)
 - User Profile
 
+## 🗂️ Firestore Database Schema Design (Data Modeling)
+
+This section defines a future-proof Cloud Firestore schema for SafeRide. It focuses on structure and naming conventions only (no CRUD implementation yet).
+
+### 1) Data Requirements List
+- Users and rider profiles
+- Community-created safe routes
+- Ratings and reviews for routes
+- Route safety incidents/updates
+- User favorites (saved routes)
+- Optional ride sessions/history
+
+### 2) Core Collections, Documents, and Fields
+
+#### users (collection)
+**Document ID:** `uid` (Firebase Auth UID)
+
+Fields:
+- `name`: string
+- `email`: string
+- `photoUrl`: string?
+- `isProfileComplete`: boolean
+- `createdAt`: timestamp
+- `updatedAt`: timestamp
+- `lastLoginAt`: timestamp
+
+Sample document:
+```json
+{
+  "name": "Asha Patel",
+  "email": "asha@example.com",
+  "photoUrl": "",
+  "isProfileComplete": true,
+  "createdAt": "serverTimestamp",
+  "updatedAt": "serverTimestamp",
+  "lastLoginAt": "serverTimestamp"
+}
+```
+
+#### routes (collection)
+**Document ID:** auto ID (`routeId`)
+
+Fields:
+- `title`: string
+- `description`: string
+- `createdBy`: string (user UID)
+- `distanceKm`: number
+- `estimatedDurationMin`: number
+- `difficulty`: string (`easy|moderate|hard`)
+- `startLocation`: map `{lat:number, lng:number, label:string}`
+- `endLocation`: map `{lat:number, lng:number, label:string}`
+- `pathPoints`: array<map> (`[{lat, lng}]`) kept size-limited
+- `averageRating`: number
+- `reviewsCount`: number
+- `isActive`: boolean
+- `createdAt`: timestamp
+- `updatedAt`: timestamp
+
+Sample document:
+```json
+{
+  "title": "Lake Loop Morning Ride",
+  "description": "Low-traffic sunrise route with bike lane",
+  "createdBy": "uid_123",
+  "distanceKm": 7.4,
+  "estimatedDurationMin": 36,
+  "difficulty": "easy",
+  "startLocation": {"lat": 12.9716, "lng": 77.5946, "label": "City Park Gate"},
+  "endLocation": {"lat": 12.9716, "lng": 77.5946, "label": "City Park Gate"},
+  "pathPoints": [{"lat": 12.9716, "lng": 77.5946}],
+  "averageRating": 4.5,
+  "reviewsCount": 12,
+  "isActive": true,
+  "createdAt": "serverTimestamp",
+  "updatedAt": "serverTimestamp"
+}
+```
+
+#### routeReviews (subcollection under routes)
+Path: `routes/{routeId}/routeReviews/{reviewId}`
+
+Fields:
+- `userId`: string
+- `rating`: number (1–5)
+- `comment`: string
+- `createdAt`: timestamp
+
+#### routeIncidents (subcollection under routes)
+Path: `routes/{routeId}/routeIncidents/{incidentId}`
+
+Fields:
+- `reportedBy`: string (user UID)
+- `type`: string (`traffic|lighting|roadDamage|harassment|other`)
+- `severity`: string (`low|medium|high`)
+- `message`: string
+- `location`: map `{lat:number, lng:number}`
+- `status`: string (`open|resolved`)
+- `createdAt`: timestamp
+- `updatedAt`: timestamp
+
+#### userFavorites (subcollection under users)
+Path: `users/{uid}/userFavorites/{routeId}`
+
+Fields:
+- `routeId`: string
+- `savedAt`: timestamp
+
+#### rideSessions (optional subcollection under users)
+Path: `users/{uid}/rideSessions/{sessionId}`
+
+Fields:
+- `routeId`: string
+- `startedAt`: timestamp
+- `endedAt`: timestamp?
+- `durationMin`: number?
+- `status`: string (`inProgress|completed|cancelled`)
+
+### 3) Why Subcollections Are Used
+- `routeReviews` and `routeIncidents` can grow to thousands of records per route; subcollections prevent oversized route documents.
+- `userFavorites` and `rideSessions` belong to a specific user and should be queried independently.
+- This improves scalability, read cost efficiency, and real-time update performance.
+
+### 4) Naming and Field Rules
+- Use **lowerCamelCase** for all field names.
+- Keep maps shallow (avoid deep nesting).
+- Use timestamps for sorting/filtering:
+  - `createdAt: FieldValue.serverTimestamp()`
+  - `updatedAt: FieldValue.serverTimestamp()`
+- Prefer auto IDs for most collections; use `uid` where identity already exists.
+
+### 5) Visual Schema Diagram (Mermaid)
+
+```mermaid
+flowchart TD
+  U[users] --> UDoc[uid]
+  UDoc --> UFav[userFavorites]
+  UDoc --> URide[rideSessions]
+
+  R[routes] --> RDoc[routeId]
+  RDoc --> Rev[routeReviews]
+  RDoc --> Inc[routeIncidents]
+
+  UDoc -->|createdBy / userId| RDoc
+
+  subgraph UserDocFields[users/{uid} fields]
+    U1[name:string]
+    U2[email:string]
+    U3[isProfileComplete:boolean]
+    U4[createdAt:timestamp]
+    U5[updatedAt:timestamp]
+    U6[lastLoginAt:timestamp]
+  end
+
+  subgraph RouteDocFields[routes/{routeId} fields]
+    R1[title:string]
+    R2[description:string]
+    R3[distanceKm:number]
+    R4[difficulty:string]
+    R5[startLocation:map]
+    R6[endLocation:map]
+    R7[averageRating:number]
+    R8[reviewsCount:number]
+    R9[createdAt:timestamp]
+  end
+
+  subgraph ReviewFields[routes/{routeId}/routeReviews/{reviewId}]
+    RV1[userId:string]
+    RV2[rating:number]
+    RV3[comment:string]
+    RV4[createdAt:timestamp]
+  end
+
+  subgraph IncidentFields[routes/{routeId}/routeIncidents/{incidentId}]
+    I1[reportedBy:string]
+    I2[type:string]
+    I3[severity:string]
+    I4[status:string]
+    I5[createdAt:timestamp]
+  end
+```
+
+### 6) Schema Validation Checklist
+- Matches SafeRide features (auth, routes, ratings, profile, updates).
+- Scales for large route/review/incident datasets.
+- Groups related data logically under users and routes.
+- Uses subcollections where growth is unbounded.
+- Uses consistent field naming and timestamp strategy.
+- Easy for another developer to understand and implement.
+
 ## 🛠 Tech Stack
 - Flutter & Dart
 - Firebase Authentication
