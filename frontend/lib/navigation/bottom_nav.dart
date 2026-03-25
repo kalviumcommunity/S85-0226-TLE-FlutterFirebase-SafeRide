@@ -11,13 +11,39 @@ class BottomNavigation extends StatefulWidget {
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation> {
+class _BottomNavigationState extends State<BottomNavigation> with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
+  late AnimationController _animationController;
+  late Animation<double> _rotationAnimation;
+  
   static const List<Widget> _screens = [
     DashboardScreen(),
     RoutesListScreen(),
     ProfileScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+    
+    _rotationAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.linear,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,25 +56,55 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   Widget _buildMobileLayout() {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return FadeTransition(
+            opacity: animation,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0.0, 0.1),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            ),
+          );
+        },
+        child: IndexedStack(
+          key: ValueKey<int>(_currentIndex),
+          index: _currentIndex,
+          children: _screens,
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
         type: BottomNavigationBarType.fixed,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
+            icon: AnimatedIcon(
+              icon: AnimatedIcons.home_menu,
+              progress: _currentIndex == 0 ? _rotationAnimation : const AlwaysStoppedAnimation(0),
+            ),
             label: 'Dashboard',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.route),
+            icon: AnimatedBuilder(
+              animation: _rotationAnimation,
+              builder: (context, child) {
+                return Transform.rotate(
+                  angle: _currentIndex == 1 ? _rotationAnimation.value * 2 * 3.14159 : 0,
+                  child: const Icon(Icons.route),
+                );
+              },
+            ),
             label: 'Routes',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: AnimatedIcon(
+              icon: AnimatedIcons.list_view,
+              progress: _currentIndex == 2 ? _rotationAnimation : const AlwaysStoppedAnimation(0),
+            ),
             label: 'Profile',
           ),
         ],
@@ -133,5 +189,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
     setState(() {
       _currentIndex = index;
     });
+    
+    // Start animation when tab changes
+    if (_animationController.status == AnimationStatus.completed) {
+      _animationController.reset();
+    }
+    _animationController.forward();
   }
 }
