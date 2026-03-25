@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 import 'screens/bottom_nav_demo.dart';
 import 'screens/state_management_demo.dart';
 import 'screens/responsive_demo.dart';
+import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/second_screen.dart';
 import 'screens/scrollable_views.dart';   // ⭐ ADD THIS
@@ -12,7 +14,6 @@ import 'screens/user_input_form.dart';
 import 'screens/asset_demo_screen.dart';
 import 'screens/animations_demo_screen.dart';
 import 'screens/responsive_layout.dart';
-import 'screens/auth_wrapper.dart';
 
 import 'theme/theme_state.dart';
 import 'screens/theme_toggle_screen.dart';
@@ -44,8 +45,24 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      // AuthWrapper handles auth state - routes to LoginScreen or ResponsiveHome
-      home: const AuthWrapper(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
+          if (snapshot.hasData) {
+            return const HomeScreen();
+          }
+
+          return const AuthScreen();
+        },
+      ),
 
       routes: {
         '/home': (context) => const HomeScreen(),
