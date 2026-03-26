@@ -23,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    // Trigger animations after widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         _isFormVisible = true;
@@ -46,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _emailController.text.trim(),
         _passwordController.text,
       );
-      
+
       if (mounted && authProvider.errorMessage != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -74,11 +73,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 800),
-                    curve: Curves.elasticOut,
-                    transform: Matrix4.identity()
-                      ..scale(_isIconAnimated ? 1.0 : 0.0),
+                  Transform.scale(
+                    scale: _isIconAnimated ? 1.0 : 0.01,
                     child: const Icon(
                       Icons.directions_bike,
                       size: 100,
@@ -86,55 +82,66 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 32),
+
                   AnimatedOpacity(
                     opacity: _isFormVisible ? 1.0 : 0.0,
                     duration: const Duration(milliseconds: 600),
                     curve: Curves.easeIn,
-                    child: AnimatedSlide(
-                      offset: Offset(0.0, _isFormVisible ? 0.0 : 0.3),
-                      duration: const Duration(milliseconds: 600),
-                      curve: Curves.easeOutCubic,
-                      child: CustomTextField(
-                    label: 'Email',
-                    hintText: 'Enter your email',
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: Validators.validateEmail,
-                    prefixIcon: const Icon(Icons.email),
+                    child: Column(
+                      children: [
+                        AnimatedSlide(
+                          offset: Offset(
+                              0.0, _isFormVisible ? 0.0 : 0.3),
+                          duration: const Duration(milliseconds: 600),
+                          curve: Curves.easeOutCubic,
+                          child: CustomTextField(
+                            label: 'Email',
+                            hintText: 'Enter your email',
+                            controller: _emailController,
+                            keyboardType:
+                                TextInputType.emailAddress,
+                            validator: Validators.validateEmail,
+                            prefixIcon: const Icon(Icons.email),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextField(
+                          label: 'Password',
+                          hintText: 'Enter your password',
+                          controller: _passwordController,
+                          obscureText: true,
+                          validator: Validators.validatePassword,
+                          prefixIcon: const Icon(Icons.lock),
+                        ),
+                      ],
+                    ),
                   ),
-                  ),
-                  const SizedBox(height: 16),
-                  CustomTextField(
-                    label: 'Password',
-                    hintText: 'Enter your password',
-                    controller: _passwordController,
-                    obscureText: true,
-                    validator: Validators.validatePassword,
-                    prefixIcon: const Icon(Icons.lock),
-                  ),
-                  ),
+
                   const SizedBox(height: 24),
+
                   AnimatedOpacity(
                     opacity: _isFormVisible ? 1.0 : 0.0,
                     duration: const Duration(milliseconds: 800),
                     curve: Curves.easeIn,
                     child: CustomButton(
-                    text: 'Login',
-                    onPressed: _login,
-                    isLoading: authProvider.isLoading,
+                      text: 'Login',
+                      onPressed: _login,
+                      isLoading: authProvider.isLoading,
                     ),
                   ),
+
                   const SizedBox(height: 16),
+
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, RouteConstants.signup);
+                      Navigator.pushNamed(
+                          context, RouteConstants.signup);
                     },
-                    child: const Text('Don\'t have an account? Sign up'),
+                    child:
+                        const Text('Don\'t have an account? Sign up'),
                   ),
                   TextButton(
-                    onPressed: () {
-                      // TODO: Implement forgot password
-                    },
+                    onPressed: () {},
                     child: const Text('Forgot password?'),
                   ),
                 ],

@@ -3,11 +3,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'core/services/firebase_service.dart';
 import 'core/theme/theme_provider.dart';
+import 'core/theme/app_colors.dart';
 import 'features/auth/providers/auth_provider.dart';
 import 'features/routes/providers/route_provider.dart';
 import 'navigation/app_router.dart';
 import 'features/auth/presentation/screens/login_screen.dart';
 import 'navigation/bottom_nav.dart';
+import 'widgets/common/loading_widget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,9 +47,13 @@ class MyApp extends StatelessWidget {
               stream: Provider.of<AuthProvider>(context).authStateChanges,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Scaffold(
+                  return Scaffold(
+                    backgroundColor: AppColors.primaryBackground,
                     body: Center(
-                      child: CircularProgressIndicator(),
+                      child: LoadingWidget(
+                        message: 'Initializing SafeRide...',
+                        size: 80,
+                      ),
                     ),
                   );
                 }
