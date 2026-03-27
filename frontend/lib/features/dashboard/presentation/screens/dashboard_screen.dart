@@ -6,6 +6,7 @@ import '../../../../widgets/common/cycling_logo.dart';
 import '../../../../core/theme/theme_provider.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../routes/providers/route_provider.dart';
+import '../../../routes/map_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -98,6 +99,8 @@ class DashboardScreen extends StatelessWidget {
               showProgress: true,
               progressValue: _calculateAverageRating(routeProvider) / 5,
             ),
+            const SizedBox(height: 24),
+            _buildMapButton(context),
           ],
         ),
       ),
@@ -182,6 +185,8 @@ class DashboardScreen extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 24),
+            _buildMapButton(context),
           ],
         ),
       ),
@@ -286,6 +291,8 @@ class DashboardScreen extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 32),
+            _buildMapButton(context),
           ],
         ),
       ),
@@ -397,5 +404,31 @@ class DashboardScreen extends StatelessWidget {
       default:
         return 0.0;
     }
+  }
+
+  Widget _buildMapButton(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: ElevatedButton.icon(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const MapScreen()),
+          );
+        },
+        icon: const Icon(Icons.map),
+        label: const Text('View Routes on Map'),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.cyclingGreen,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 4,
+        ),
+      ),
+    );
   }
 }
