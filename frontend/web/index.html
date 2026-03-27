@@ -31,6 +31,29 @@
 
   <title>frontend</title>
   <link rel="manifest" href="manifest.json">
+  
+  <!-- Google Maps JavaScript API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxAkzndC275bJ_x3MyOZItwrluzt2UmVg&callback=initMap" async defer></script>
+  <script>
+    window.initMap = function() {
+      console.log('Google Maps loaded successfully');
+      window.googleMapsLoaded = true;
+    };
+    
+    window.googleMapsError = function() {
+      console.error('Google Maps failed to load');
+      window.googleMapsLoaded = false;
+      window.googleMapsError = true;
+    };
+    
+    // Handle script loading errors
+    window.addEventListener('error', function(e) {
+      if (e.filename && e.filename.includes('maps.googleapis.com')) {
+        console.error('Google Maps script error:', e.message);
+        window.googleMapsError = true;
+      }
+    });
+  </script>
 </head>
 <body>
   <!--

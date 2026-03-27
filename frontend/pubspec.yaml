@@ -48,6 +48,12 @@ dependencies:
   
   # Local Storage
   shared_preferences: ^2.3.3
+  
+  # Google Maps
+  google_maps_flutter: ^2.5.3
+  
+  # Location Services
+  location: ^5.0.3
 
 dev_dependencies:
   flutter_test:
